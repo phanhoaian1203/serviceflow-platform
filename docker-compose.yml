@@ -1,0 +1,13 @@
+# Development Docker Compose file.
+# This file will be completed in later phases when the client and server are initialized.
+
+services:
+  # client:
+  #   build: ./client
+  #   ports:
+  #     - "5173:5173"
+
+  # server:
+  #   build: ./server
+  #   ports:
+  #     - "5000:5000"

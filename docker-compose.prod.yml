@@ -1,0 +1,9 @@
+# Production Docker Compose file.
+# This file will be completed during the production deployment phase.
+
+services:
+  # nginx:
+  #   image: nginx:latest
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
