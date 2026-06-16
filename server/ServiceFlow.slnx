@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="ServiceFlow.Api/ServiceFlow.Api.csproj" />
+  <Project Path="ServiceFlow.Application/ServiceFlow.Application.csproj" />
+  <Project Path="ServiceFlow.Domain/ServiceFlow.Domain.csproj" />
+  <Project Path="ServiceFlow.Infrastructure/ServiceFlow.Infrastructure.csproj" />
+  <Project Path="ServiceFlow.IntegrationTests/ServiceFlow.IntegrationTests.csproj" />
+  <Project Path="ServiceFlow.UnitTests/ServiceFlow.UnitTests.csproj" />
+</Solution>
