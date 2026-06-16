@@ -1,6 +1,16 @@
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
+
 namespace ServiceFlow.IntegrationTests;
 
-public class TestWebApplicationFactory
+public class TestWebApplicationFactory : WebApplicationFactory<Program>
 {
-    // Placeholder for custom WebApplicationFactory used in Integration Tests
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    {
+        builder.UseEnvironment("Testing");
+        
+        // Custom configuration overrides (e.g. database mocks) can be placed here in later phases
+        
+        base.ConfigureWebHost(builder);
+    }
 }
