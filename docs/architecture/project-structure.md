@@ -103,3 +103,98 @@ Mã nguồn phía server được tổ chức theo triết lý **Clean Architect
 
 * **🟢 (Cho phép)**: Project hàng ngang được phép tham chiếu (reference) tới Project cột dọc.
 * **Chỗ trống (Cấm)**: Không được phép tham chiếu chéo hoặc tham chiếu ngược (ví dụ: Application tuyệt đối không được tham chiếu tới Infrastructure).
+
+---
+
+## 4. Cấu trúc chi tiết Client (Frontend)
+```text
+client/
+├── public/                 # Các tài nguyên tĩnh công khai (favicon, images...)
+├── src/
+│   ├── app/                # Cấu hình cốt lõi của ứng dụng React
+│   │   ├── App.tsx         # Component App chính
+│   │   ├── main.tsx        # File entrypoint khởi chạy React
+│   │   └── router.tsx      # Bộ định tuyến bao bọc ứng dụng (AppRouter)
+│   │
+│   ├── assets/             # Hình ảnh, logo, tài nguyên nội bộ
+│   │
+│   ├── components/         # Các UI component dùng chung
+│   │   ├── common/         # Component cơ bản (Button, Input, Card...)
+│   │   └── layout/         # Component layout (Sidebar, Header, Footer...)
+│   │
+│   ├── features/           # Các feature module theo nghiệp vụ
+│   │   ├── auth/           # Module đăng nhập, đăng ký
+│   │   ├── dashboard/      # Module dashboard tổng quan
+│   │   └── requests/       # Module quản lý phiếu yêu cầu dịch vụ
+│   │
+│   ├── layouts/            # Các khung giao diện mẫu (Layouts)
+│   │   ├── PublicLayout.tsx
+│   │   ├── AuthLayout.tsx
+│   │   └── DashboardLayout.tsx
+│   │
+│   ├── pages/              # Trang hoàn chỉnh (chỉ làm nhiệm vụ ghép nối component)
+│   │   ├── LandingPage.tsx
+│   │   ├── LoginPage.tsx
+│   │   ├── RegisterPage.tsx
+│   │   ├── DashboardPage.tsx
+│   │   └── NotFoundPage.tsx
+│   │
+│   ├── routes/             # Cấu hình routes chi tiết
+│   │   └── AppRoutes.tsx   # Danh sách định nghĩa Route của ứng dụng
+│   │
+│   ├── services/           # Lớp gọi API (HTTP client)
+│   │   └── apiClient.ts    # Cấu hình fetch client dùng chung
+│   │
+│   ├── styles/             # Cấu hình CSS
+│   │   └── index.css       # File CSS chính tích hợp TailwindCSS
+│   │
+│   ├── constants/          # Các giá trị hằng số dùng chung
+│   │   └── routes.ts       # Định nghĩa các đường dẫn url (route path)
+│   │
+│   └── types/              # Định nghĩa các kiểu dữ liệu TypeScript
+│
+├── .env.example
+├── Dockerfile
+├── package.json
+├── vite.config.ts
+├── tsconfig.json
+└── tailwind.config.js
+```
+
+---
+
+## 5. Cấu trúc chi tiết Server (Backend)
+```text
+server/
+├── ServiceFlow.Api/                    # Tầng API HTTP
+│   ├── Controllers/
+│   │   ├── HealthController.cs
+│   │   └── SystemController.cs
+│   ├── Extensions/
+│   │   ├── CorsExtensions.cs
+│   │   ├── SwaggerExtensions.cs
+│   │   └── HealthCheckExtensions.cs
+│   ├── Program.cs
+│   ├── appsettings.json
+│   ├── appsettings.Development.json
+│   └── appsettings.example.json
+│
+├── ServiceFlow.Application/            # Tầng Logic nghiệp vụ
+│   ├── Common/
+│   │   └── Models/
+│   │       └── ApiResponse.cs
+│   └── DependencyInjection.cs
+│
+├── ServiceFlow.Domain/                 # Tầng Lõi nghiệp vụ (Entities/Enums)
+│
+├── ServiceFlow.Infrastructure/         # Tầng Hạ tầng kỹ thuật (Database/External Services)
+│   └── DependencyInjection.cs
+│
+├── ServiceFlow.UnitTests/              # Các bài kiểm thử đơn vị
+│
+├── ServiceFlow.IntegrationTests/       # Các bài kiểm thử tích hợp (Integration Tests)
+│   ├── HealthEndpointTests.cs
+│   └── TestWebApplicationFactory.cs
+│
+└── ServiceFlow.slnx
+```

@@ -1,13 +1,21 @@
-# Development Docker Compose file.
-# This file will be completed in later phases when the client and server are initialized.
-
 services:
-  # client:
-  #   build: ./client
-  #   ports:
-  #     - "5173:5173"
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "5173:80"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:5000/api/v1
+    depends_on:
+      - server
 
-  # server:
-  #   build: ./server
-  #   ports:
-  #     - "5000:5000"
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5000
