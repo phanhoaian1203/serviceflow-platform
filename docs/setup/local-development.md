@@ -23,12 +23,16 @@ cd serviceflow-platform
 ```
 
 ### Bước 2: Thiết lập biến môi trường
-* Ở thư mục gốc dự án, tạo một file tên `.env` từ file `.env.example` và điều chỉnh các giá trị phù hợp (đặc biệt là kết nối MongoDB và Cloudinary khi bước vào các phase sau).
+* Ở thư mục gốc dự án, tạo một file tên `.env` từ file `.env.example` và điều chỉnh các giá trị phù hợp.
 * Ở thư mục `client/`, tạo một file tên `.env` và đảm bảo biến `VITE_API_BASE_URL` trỏ tới URL API local của backend.
   ```env
   VITE_API_BASE_URL=http://localhost:5000/api/v1
   VITE_APP_NAME=ServiceFlow
   ```
+
+### Bước 3: Cấu hình MongoDB và User Secrets (Môi trường Local)
+Để chạy được Backend kết nối cơ sở dữ liệu MongoDB Atlas, bạn cần thiết lập connection string thông qua công cụ **User Secrets** (được khuyến nghị cho môi trường Local).
+* Xem hướng dẫn thiết lập chi tiết tại [Hướng dẫn thiết lập MongoDB Atlas và Cấu hình User Secrets](file:///d:/FullstackProject/serviceflow-platform/serviceflow-platform/docs/setup/mongodb-atlas-setup.md).
 
 ---
 
