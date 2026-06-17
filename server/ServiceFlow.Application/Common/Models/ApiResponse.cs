@@ -1,32 +1,42 @@
+using System.Collections.Generic;
+
 namespace ServiceFlow.Application.Common.Models;
 
-public class ApiResponse<T>
+public sealed class ApiResponse<T>
 {
-    public bool Success { get; set; }
-    public string? Message { get; set; }
-    public T? Data { get; set; }
-    public List<string>? Errors { get; set; }
-    public string? TraceId { get; set; }
+    public bool Success { get; init; }
+    public string Message { get; init; } = string.Empty;
+    public T? Data { get; init; }
+    public IReadOnlyList<ErrorDetail>? Errors { get; init; }
+    public string? TraceId { get; init; }
 
-    public static ApiResponse<T> Ok(T data, string? message = null)
+    public static ApiResponse<T> Ok(
+        T data,
+        string message = "Request completed successfully.",
+        string? traceId = null)
     {
         return new ApiResponse<T>
         {
             Success = true,
-            Message = message ?? "Request completed successfully.",
+            Message = message,
             Data = data,
-            Errors = null
+            Errors = null,
+            TraceId = traceId
         };
     }
 
-    public static ApiResponse<T> Fail(string message, List<string>? errors = null)
+    public static ApiResponse<T> Fail(
+        string message,
+        IReadOnlyList<ErrorDetail>? errors = null,
+        string? traceId = null)
     {
         return new ApiResponse<T>
         {
             Success = false,
             Message = message,
             Data = default,
-            Errors = errors ?? new List<string> { message }
+            Errors = errors,
+            TraceId = traceId
         };
     }
 }
