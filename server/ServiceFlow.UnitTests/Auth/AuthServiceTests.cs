@@ -181,8 +181,8 @@ public class AuthServiceTests
         {
             UserId = "user_id_123",
             TokenHash = oldHashToken,
-            ExpiresAt = _dateTimeProvider.UtcNow.AddDays(1),
-            CreatedAt = _dateTimeProvider.UtcNow.AddDays(-1)
+            ExpiresAt = DateTime.UtcNow.AddDays(1),
+            CreatedAt = DateTime.UtcNow.AddDays(-1)
         };
 
         var user = new User
