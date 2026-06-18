@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -38,6 +39,7 @@ public sealed class ExceptionHandlingMiddleware
     {
         var statusCode = exception switch
         {
+            ValidationException => HttpStatusCode.BadRequest,
             BadRequestException => HttpStatusCode.BadRequest,
             UnauthorizedException => HttpStatusCode.Unauthorized,
             ForbiddenException => HttpStatusCode.Forbidden,
@@ -51,9 +53,15 @@ public sealed class ExceptionHandlingMiddleware
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)statusCode;
 
+        IReadOnlyList<ErrorDetail>? errors = exception switch
+        {
+            ValidationException validationException => validationException.Errors,
+            _ => null
+        };
+
         var response = ApiResponse<object>.Fail(
             message: exception.Message,
-            errors: null,
+            errors: errors,
             traceId: context.TraceIdentifier);
 
         var json = JsonSerializer.Serialize(response, new JsonSerializerOptions

@@ -12,8 +12,8 @@ builder.Services.AddControllers();
 builder.Services.AddDevCors();
 builder.Services.AddSwaggerDocumentation();
 builder.Services.AddAppHealthChecks();
-
-// Register Clean Architecture layers
+builder.Services.AddJwtAuthentication(builder.Configuration);
+builder.Services.AddAuthorization();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
@@ -25,6 +25,7 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseSwaggerDocumentation(app.Environment);
 app.UseDevCors();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
