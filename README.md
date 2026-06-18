@@ -1,24 +1,25 @@
 # ServiceFlow Platform
 
 ## Project Overview
-ServiceFlow is a small business service operation platform designed for repair shops such as laptop, phone, and small electronic device repair services.
-The system helps repair shops manage customer requests, staff assignment, service progress, quotations, manual payment tracking, media evidence, warranty, and operational analytics.
+ServiceFlow is a lightweight service operations platform that helps small service businesses (such as repair shops, spas, photography studios, beauty salons, cleaning, and maintenance services) manage customer requests, bookings, quotations, work progress, payments, and after-service follow-up in one place.
+
+While the system is designed to be industry-agnostic, the initial MVP focuses on a technology device repair shop use case to provide a concrete, fully implemented workflow for testing and demonstration.
 
 ## Problem Statement
-Many small repair shops currently manage customer requests through Zalo, Facebook, phone calls, paper notes, or spreadsheets. This makes it difficult to track request status, staff responsibility, quotation history, payment status, and warranty information.
-ServiceFlow transforms these scattered customer interactions into structured service requests with clear workflow, timeline, quotation, evidence, and warranty tracking.
+Many small service businesses manage customer interactions through fragmented channels like Zalo, Facebook, phone calls, paper slips, or spreadsheets. This makes it difficult to track service progress, assign staff, manage quotation revisions, record payments, and handle after-service care or warranty requests.
+ServiceFlow centralizes these operations into a unified platform with clean digital workflows, status tracking, secure online quotations, before/after evidence logging, and follow-up tools.
 
 ## Main Workflow
-Customer contacts shop  
-→ Shop creates service request  
-→ Manager assigns staff  
-→ Staff checks issue  
-→ Shop sends quotation  
-→ Customer approves quotation  
-→ Staff processes service  
-→ Shop updates payment  
-→ Request is completed  
-→ Warranty/review is recorded
+Customer submits request/booking  
+→ Workspace receives & accepts request  
+→ Manager/Owner assigns staff  
+→ Staff reviews & prepares/inspects  
+→ Business sends digital quotation/estimate  
+→ Customer approves quotation/estimate  
+→ Staff performs & completes service  
+→ Customer pays & workspace records payment  
+→ Service request is completed  
+→ After-service follow-up, feedback, or warranty is tracked
 
 ## Tech Stack
 * **Frontend**: ReactJS, Vite, TypeScript, TailwindCSS

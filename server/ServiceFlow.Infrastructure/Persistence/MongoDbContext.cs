@@ -22,7 +22,21 @@ public sealed class MongoDbContext
             throw new InvalidOperationException("MongoDB database name is not configured.");
         }
 
-        var client = new MongoClient(settings.ConnectionString);
+        var clientSettings = MongoClientSettings.FromConnectionString(settings.ConnectionString);
+        
+        clientSettings.SslSettings = new SslSettings
+        {
+            CheckCertificateRevocation = false,
+            EnabledSslProtocols = System.Security.Authentication.SslProtocols.Tls12,
+            ClientCertificateSelectionCallback = (sender, host, certificates, certificate, issuers) => null
+        };
+
+        if (settings.AllowInsecureTls)
+        {
+            clientSettings.SslSettings.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
+        }
+
+        var client = new MongoClient(clientSettings);
         _database = client.GetDatabase(settings.DatabaseName);
     }
 
