@@ -1,14 +1,15 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { ROUTES } from '../constants/routes';
-import { PublicLayout } from '../layouts/PublicLayout';
-import { AuthLayout } from '../layouts/AuthLayout';
-import { DashboardLayout } from '../layouts/DashboardLayout';
-import { LandingPage } from '../pages/LandingPage';
-import { LoginPage } from '../pages/LoginPage';
-import { RegisterPage } from '../pages/RegisterPage';
-import { DashboardPage } from '../pages/DashboardPage';
-import { NotFoundPage } from '../pages/NotFoundPage';
+import { ROUTES } from '../constants/routes.ts';
+import { PublicLayout } from '../layouts/PublicLayout.tsx';
+import { AuthLayout } from '../layouts/AuthLayout.tsx';
+import { DashboardLayout } from '../layouts/DashboardLayout.tsx';
+import { LandingPage } from '../pages/LandingPage.tsx';
+import { LoginPage } from '../pages/LoginPage.tsx';
+import { RegisterPage } from '../pages/RegisterPage.tsx';
+import { DashboardPage } from '../pages/DashboardPage.tsx';
+import { NotFoundPage } from '../pages/NotFoundPage.tsx';
+import { ProtectedRoute } from './ProtectedRoute.tsx';
 
 export const AppRoutes: React.FC = () => {
   return (
@@ -25,8 +26,10 @@ export const AppRoutes: React.FC = () => {
       </Route>
 
       {/* Dashboard Routes */}
-      <Route element={<DashboardLayout />}>
-        <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} />
+      <Route element={<ProtectedRoute />}>
+        <Route element={<DashboardLayout />}>
+          <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} />
+        </Route>
       </Route>
 
       {/* Fallback 404 */}

@@ -21,41 +21,69 @@ export const DashboardPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold tracking-tight">Tổng quan Vận hành</h2>
+    <div className="space-y-8 font-saans">
+      <div className="space-y-1">
+        <span className="text-[10px] font-bold text-carbon uppercase tracking-nav">Vận hành tổng quan</span>
+        <h2 className="text-3xl font-bold tracking-[-0.02em] text-ink-black font-nb-international uppercase">Bảng điều khiển</h2>
+      </div>
+
+      {/* Grid Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
-          <div className="text-slate-500 text-xs font-semibold uppercase">Yêu cầu mới (Hôm nay)</div>
-          <div className="text-3xl font-extrabold mt-2 text-blue-500">0</div>
+        <div className="bg-white border border-slate-200 rounded-lg p-6 shadow-none">
+          <div className="text-carbon text-[9px] font-bold uppercase tracking-nav">Yêu cầu mới (Hôm nay)</div>
+          <div className="text-3xl font-bold tracking-tight text-ink-black font-nb-international mt-2">0</div>
         </div>
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
-          <div className="text-slate-500 text-xs font-semibold uppercase">Đang sửa chữa</div>
-          <div className="text-3xl font-extrabold mt-2 text-yellow-500">0</div>
+        <div className="bg-white border border-slate-200 rounded-lg p-6 shadow-none">
+          <div className="text-carbon text-[9px] font-bold uppercase tracking-nav">Đang thực hiện</div>
+          <div className="text-3xl font-bold tracking-tight text-ink-black font-nb-international mt-2">0</div>
         </div>
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
-          <div className="text-slate-500 text-xs font-semibold uppercase">Chờ duyệt báo giá</div>
-          <div className="text-3xl font-extrabold mt-2 text-purple-500">0</div>
+        <div className="bg-white border border-slate-200 rounded-lg p-6 shadow-none">
+          <div className="text-carbon text-[9px] font-bold uppercase tracking-nav">Chờ duyệt báo giá</div>
+          <div className="text-3xl font-bold tracking-tight text-ink-black font-nb-international mt-2">0</div>
         </div>
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
-          <div className="text-slate-500 text-xs font-semibold uppercase">Doanh thu tháng này</div>
-          <div className="text-3xl font-extrabold mt-2 text-emerald-500">0 đ</div>
+        <div className="bg-white border border-slate-200 rounded-lg p-6 shadow-none">
+          <div className="text-carbon text-[9px] font-bold uppercase tracking-nav">Doanh thu tháng này</div>
+          <div className="text-3xl font-bold tracking-tight text-ink-black font-nb-international mt-2">0 đ</div>
         </div>
       </div>
 
-      <div className="bg-slate-900 border border-slate-800 rounded-xl p-8">
-        <h3 className="text-lg font-bold mb-4">Trạng thái kết nối Hệ thống (API)</h3>
+      {/* API Connection Health Block */}
+      <div className="bg-white border border-slate-200 rounded-lg p-8 shadow-none max-w-2xl">
+        <h3 className="text-sm font-bold text-ink-black uppercase tracking-nav mb-4">Trạng thái kết nối Hệ thống (API)</h3>
         {loading ? (
-          <p className="text-slate-400 text-sm">Đang tải kết nối Backend...</p>
+          <div className="flex items-center gap-2.5 text-xs text-carbon">
+            <div className="w-3.5 h-3.5 border-2 border-slate-250 border-t-default-violet rounded-full animate-spin"></div>
+            <span>Đang kiểm tra kết nối Backend...</span>
+          </div>
         ) : systemInfo ? (
-          <div className="space-y-2 text-sm text-slate-300">
-            <div><span className="text-slate-500">API Status:</span> <span className="text-emerald-500 font-semibold">Online</span></div>
-            <div><span className="text-slate-500">Dịch vụ:</span> {systemInfo.serviceName}</div>
-            <div><span className="text-slate-500">Phiên bản:</span> {systemInfo.version}</div>
-            <div><span className="text-slate-500">Môi trường:</span> {systemInfo.environment}</div>
+          <div className="space-y-3 text-xs text-carbon">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span className="font-bold text-ink-black">API Online</span>
+            </div>
+            <div className="grid grid-cols-2 gap-y-2 border-t border-slate-150 pt-3">
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-nav text-carbon block">Dịch vụ</span>
+                <span className="font-semibold text-ink-black">{systemInfo.serviceName}</span>
+              </div>
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-nav text-carbon block">Phiên bản</span>
+                <span className="font-semibold text-ink-black">{systemInfo.version}</span>
+              </div>
+              <div className="mt-2">
+                <span className="text-[10px] font-bold uppercase tracking-nav text-carbon block">Môi trường</span>
+                <span className="font-semibold text-ink-black">{systemInfo.environment}</span>
+              </div>
+            </div>
           </div>
         ) : (
-          <div className="text-red-400 text-sm">
-            Không thể kết nối đến Backend API. Vui lòng kiểm tra xem server đã khởi động ở http://localhost:5000 chưa.
+          <div className="flex items-start gap-2.5 text-xs text-red-650 bg-red-500/5 border border-red-500/20 rounded-lg p-4">
+            <svg className="w-4 h-4 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <span className="leading-relaxed font-medium">
+              Không thể kết nối đến Backend API. Vui lòng kiểm tra xem server đã khởi động ở http://localhost:5000 chưa.
+            </span>
           </div>
         )}
       </div>
