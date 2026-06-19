@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import { authApi } from './auth.api.ts';
 import type { AuthUserDto, LoginRequest, RegisterRequest } from './auth.types.ts';
 
@@ -19,24 +19,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<AuthUserDto | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const refreshingRef = useRef<Promise<string | null> | null>(null);
 
   // Hàm refresh token (Silent Refresh)
   const refresh = useCallback(async (): Promise<string | null> => {
-    try {
-      const response = await authApi.refreshToken();
-      if (response.success && response.data) {
-        setAccessToken(response.data.accessToken);
-        setUser(response.data.user);
-        return response.data.accessToken;
-      }
-    } catch (error) {
-      // Hết hạn refresh token hoặc chưa đăng nhập, clear state
-      setAccessToken(null);
-      setUser(null);
-    } finally {
-      setIsLoading(false);
+    if (refreshingRef.current) {
+      return refreshingRef.current;
     }
-    return null;
+
+    const refreshPromise = (async () => {
+      try {
+        const response = await authApi.refreshToken();
+        if (response.success && response.data) {
+          setAccessToken(response.data.accessToken);
+          setUser(response.data.user);
+          return response.data.accessToken;
+        }
+      } catch (error) {
+        // Hết hạn refresh token hoặc chưa đăng nhập, clear state
+        setAccessToken(null);
+        setUser(null);
+      } finally {
+        setIsLoading(false);
+        refreshingRef.current = null;
+      }
+      return null;
+    })();
+
+    refreshingRef.current = refreshPromise;
+    return refreshPromise;
   }, []);
 
   // Đăng nhập
