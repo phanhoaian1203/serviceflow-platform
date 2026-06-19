@@ -78,11 +78,15 @@ public sealed class AuthController : ControllerBase
 
     private void SetRefreshTokenCookie(string token)
     {
+        var isLocalhost = Request.Host.Host.Equals("localhost", StringComparison.OrdinalIgnoreCase) ||
+                          Request.Host.Host.Equals("127.0.0.1", StringComparison.OrdinalIgnoreCase) ||
+                          Request.Host.Host.Equals("[::1]", StringComparison.OrdinalIgnoreCase) ||
+                          Request.Host.Host.Equals("::1", StringComparison.OrdinalIgnoreCase);
+
         var cookieOptions = new CookieOptions
         {
             HttpOnly = true,
-            Secure = !Request.Host.Host.Equals("localhost", StringComparison.OrdinalIgnoreCase) && 
-                     !Request.Host.Host.Equals("127.0.0.1", StringComparison.OrdinalIgnoreCase),
+            Secure = !isLocalhost,
             SameSite = SameSiteMode.Lax,
             Expires = DateTimeOffset.UtcNow.AddDays(7),
             Path = "/"
@@ -92,11 +96,15 @@ public sealed class AuthController : ControllerBase
 
     private void ClearRefreshTokenCookie()
     {
+        var isLocalhost = Request.Host.Host.Equals("localhost", StringComparison.OrdinalIgnoreCase) ||
+                          Request.Host.Host.Equals("127.0.0.1", StringComparison.OrdinalIgnoreCase) ||
+                          Request.Host.Host.Equals("[::1]", StringComparison.OrdinalIgnoreCase) ||
+                          Request.Host.Host.Equals("::1", StringComparison.OrdinalIgnoreCase);
+
         var cookieOptions = new CookieOptions
         {
             HttpOnly = true,
-            Secure = !Request.Host.Host.Equals("localhost", StringComparison.OrdinalIgnoreCase) && 
-                     !Request.Host.Host.Equals("127.0.0.1", StringComparison.OrdinalIgnoreCase),
+            Secure = !isLocalhost,
             SameSite = SameSiteMode.Lax,
             Expires = DateTimeOffset.UtcNow.AddDays(-1),
             Path = "/"

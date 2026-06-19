@@ -223,4 +223,83 @@ public class AuthServiceTests
             Arg.Is<RefreshToken>(r => r.UserId == "user_id_123" && r.TokenHash == "new_hashed_refresh_token"),
             Arg.Any<CancellationToken>());
     }
+
+    [Fact]
+    public async Task RefreshToken_WithRecentlyRevokedToken_SucceedsWithinGracePeriod()
+    {
+        // Arrange
+        var oldRawToken = "old_raw_refresh_token";
+        var oldHashToken = "old_hashed_refresh_token";
+        
+        var existingRefreshToken = new RefreshToken
+        {
+            UserId = "user_id_123",
+            TokenHash = oldHashToken,
+            ExpiresAt = DateTime.UtcNow.AddDays(1),
+            CreatedAt = DateTime.UtcNow.AddDays(-1),
+            RevokedAt = _dateTimeProvider.UtcNow.AddSeconds(-10) // 10 seconds ago (< 30s)
+        };
+
+        var user = new User
+        {
+            FullName = "Ngọc Ánh",
+            Email = "ngocanh@example.com",
+            IsActive = true
+        };
+        user.Id = "user_id_123";
+
+        _refreshTokenHasher.Hash(oldRawToken).Returns(oldHashToken);
+        _refreshTokenRepository.GetByTokenHashAsync(oldHashToken, Arg.Any<CancellationToken>())
+            .Returns(existingRefreshToken);
+        
+        _userRepository.GetByIdAsync("user_id_123", Arg.Any<CancellationToken>())
+            .Returns(user);
+        
+        _jwtTokenGenerator.GenerateAccessToken(user)
+            .Returns("new_access_token");
+        
+        _refreshTokenGenerator.Generate()
+            .Returns("new_raw_refresh_token");
+        
+        _refreshTokenHasher.Hash("new_raw_refresh_token")
+            .Returns("new_hashed_refresh_token");
+
+        // Act
+        var (response, refreshToken) = await _sut.RefreshTokenAsync(oldRawToken);
+
+        // Assert
+        Assert.Equal("new_access_token", response.AccessToken);
+        Assert.Equal("new_raw_refresh_token", refreshToken);
+        Assert.True(existingRefreshToken.IsRevoked);
+        Assert.Equal("new_hashed_refresh_token", existingRefreshToken.ReplacedByTokenHash);
+
+        await _refreshTokenRepository.Received(1).UpdateAsync(existingRefreshToken, Arg.Any<CancellationToken>());
+        await _refreshTokenRepository.Received(1).CreateAsync(
+            Arg.Is<RefreshToken>(r => r.UserId == "user_id_123" && r.TokenHash == "new_hashed_refresh_token"),
+            Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task RefreshToken_WithRevokedTokenOutsideGracePeriod_ThrowsUnauthorizedException()
+    {
+        // Arrange
+        var oldRawToken = "old_raw_refresh_token";
+        var oldHashToken = "old_hashed_refresh_token";
+        
+        var existingRefreshToken = new RefreshToken
+        {
+            UserId = "user_id_123",
+            TokenHash = oldHashToken,
+            ExpiresAt = DateTime.UtcNow.AddDays(1),
+            CreatedAt = DateTime.UtcNow.AddDays(-1),
+            RevokedAt = _dateTimeProvider.UtcNow.AddSeconds(-40) // 40 seconds ago (> 30s)
+        };
+
+        _refreshTokenHasher.Hash(oldRawToken).Returns(oldHashToken);
+        _refreshTokenRepository.GetByTokenHashAsync(oldHashToken, Arg.Any<CancellationToken>())
+            .Returns(existingRefreshToken);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<UnauthorizedException>(() => _sut.RefreshTokenAsync(oldRawToken));
+    }
 }
