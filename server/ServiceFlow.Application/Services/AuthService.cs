@@ -154,7 +154,15 @@ public sealed class AuthService : IAuthService
         var tokenHash = _refreshTokenHasher.Hash(refreshToken);
 
         var existingToken = await _refreshTokenRepository.GetByTokenHashAsync(tokenHash, cancellationToken);
-        if (existingToken == null || !existingToken.IsActive)
+        if (existingToken == null)
+        {
+            throw new UnauthorizedException("Invalid or expired refresh token.");
+        }
+
+        var isWithinGracePeriod = existingToken.RevokedAt != null && 
+                                  existingToken.RevokedAt.Value.AddSeconds(30) > _dateTimeProvider.UtcNow;
+
+        if (existingToken.IsExpired || (existingToken.IsRevoked && !isWithinGracePeriod))
         {
             throw new UnauthorizedException("Invalid or expired refresh token.");
         }
