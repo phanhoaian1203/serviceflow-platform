@@ -43,12 +43,6 @@ serviceflow-platform/
 ## Quick Start (Hướng dẫn chạy nhanh)
 Chi tiết xem thêm tại [local-development.md](file:///d:/FullstackProject/serviceflow-platform/serviceflow-platform/docs/setup/local-development.md).
 
-### Khởi chạy Backend:
-```bash
-cd server
-dotnet restore
-dotnet run --project ServiceFlow.Api
-```
 * **Swagger UI**: `http://localhost:5000/swagger`
 * **Health Check**: `http://localhost:5000/api/health`
 
