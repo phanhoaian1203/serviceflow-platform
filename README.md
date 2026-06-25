@@ -40,20 +40,6 @@ serviceflow-platform/
 └── .github/         # GitHub Actions CI/CD workflows
 ```
 
-## Quick Start (Hướng dẫn chạy nhanh)
-Chi tiết xem thêm tại [local-development.md](file:///d:/FullstackProject/serviceflow-platform/serviceflow-platform/docs/setup/local-development.md).
-
-* **Swagger UI**: `http://localhost:5000/swagger`
-* **Health Check**: `http://localhost:5000/api/health`
-
-### Khởi chạy Frontend:
-```bash
-cd client
-npm install
-npm run dev
-```
-* **Frontend Local**: `http://localhost:5173`
-
 ## Roadmap
 * **Phase 0**: Project planning and MVP scope (Completed)
 * **Phase 1**: Project foundation (In Progress)
